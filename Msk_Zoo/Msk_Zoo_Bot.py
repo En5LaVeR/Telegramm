@@ -13,17 +13,6 @@ QUESTIONS = {
     }
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def feedback(call):
-    bot.send_message(call.message.chat.id, "Оставьте свой отзыв")
-
-
-@bot.message_handler(func=lambda message: True)
-def feedback_save(message):
-    red.rpush(message.from_user.username, message)
-    bot.send_message(message, red.lrange(message.from_user.username, 0, -1))
-
-
 @bot.message_handler(commands=['start'])
 def start_(message):
     markup = types.InlineKeyboardMarkup()
@@ -121,7 +110,7 @@ def info_block(message, animal_image, animal_text, decoded_answers):
     button1 = types.InlineKeyboardButton(text="Сайт Zooпарка", url="https://new.moscowzoo.ru")
     button2 = types.InlineKeyboardButton(text="Связаться с сотрудником",
                                          url=f"https://t.me/Vidence_Verity?text={user_info}")
-    button3 = types.InlineKeyboardButton(text="Обратная связь", callback_data="/feedback")
+    # button3 = types.InlineKeyboardButton(text="Обратная связь", callback_data="/feedback")
     button4 = types.InlineKeyboardButton(text="Поделиться в TG",
                                          url=f'https://t.me/share/url?url=https://t.me/Currency_Court_Bot&'
                                              f'text={animal_text}')
@@ -129,7 +118,7 @@ def info_block(message, animal_image, animal_text, decoded_answers):
                                          url=f'https://vk.com/share.php?url=https://t.me/Currency_Court_Bot&'
                                              f'photo={animal_image}&title={animal_text}')
     button6 = types.InlineKeyboardButton(text="Начать сначала", callback_data="/start_victorina")
-    markup.add(button1, button2, button3, button4, button5, button6)
+    markup.add(button1, button2, button4, button5, button6)
     bot.send_message(message.chat.id, "Нажав кнопку ниже можете перейти на сайт зоопарка. "
                                       "Отправить итоги прохождения куратору программы. "
                                       "Или может хотите пройти тест снова?", reply_markup=markup)
